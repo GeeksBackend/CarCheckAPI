@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Create your models here.
 class Car(models.Model):
@@ -74,3 +77,64 @@ class PeriodsOwnership(models.Model):
     class Meta:
         verbose_name = "Период владения"
         verbose_name_plural = "Периоды владения"
+
+class CarPost(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name="users_posts",
+        verbose_name="Пользователь"
+    )
+    brand = models.CharField(
+        verbose_name="Марка",
+        max_length=200
+    )
+    model = models.CharField(
+        verbose_name="Модель",
+        max_length=200
+    )
+    year = models.PositiveSmallIntegerField(
+        verbose_name="Год выпуска"
+    )
+    color = models.CharField(
+        verbose_name="Цвет",
+        max_length=100
+    )
+    rudder_location = models.CharField(
+        verbose_name="Расположение руля",
+        max_length=100
+    )
+    engine_volume = models.PositiveSmallIntegerField(
+        verbose_name="Объем двигателя",
+        blank=True, null=True
+    )
+    price = models.PositiveIntegerField(
+        verbose_name="Цена",
+        blank=True, null=True
+    )
+    mileage = models.PositiveIntegerField(
+        verbose_name="Пробег",
+        blank=True, null=True
+    )
+    transmission = models.CharField(
+        max_length=100,
+        verbose_name="Коробка передач",
+        blank=True, null=True
+    )
+    region = models.CharField(
+        max_length=255,
+        verbose_name="Регион",
+        blank=True, null=True
+    )
+    accounting = models.CharField(
+        max_length=200,
+        verbose_name="Учёт",
+        blank=True, null=True
+    )
+    another = models.CharField(
+        max_length=500,
+        verbose_name="Прочее"
+    )
+
+    class Meta:
+        verbose_name = "Пост"
+        verbose_name_plural = "Посты"
