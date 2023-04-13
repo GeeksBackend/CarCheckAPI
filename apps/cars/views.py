@@ -4,8 +4,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.pagination import PageNumberPagination
 
-from apps.cars.models import Car, SpecialMarks, PeriodsOwnership
-from apps.cars.serializers import CarSerializer, SpecialMarksSerializer, PeriodsOwnershipSerializer
+from apps.cars.models import Car, SpecialMarks, PeriodsOwnership, CarPost
+from apps.cars.serializers import CarSerializer, SpecialMarksSerializer, PeriodsOwnershipSerializer, CarPostSerializer
 
 # Create your views here.
 class StandardResultsSetPagination(PageNumberPagination):
@@ -57,3 +57,12 @@ class PeriodsOwnershipAPIViewSet(GenericViewSet,
         if self.action in ('list', 'retrieve'):
             return (AllowAny(), )
         return (IsAdminUser(), )
+
+class CarPostAPIViewSet(GenericViewSet,
+                        ListModelMixin,
+                        RetrieveModelMixin,
+                        CreateModelMixin,
+                        UpdateModelMixin,
+                        DestroyModelMixin):
+    queryset = CarPost.objects.all()
+    serializer_class = CarPostSerializer
