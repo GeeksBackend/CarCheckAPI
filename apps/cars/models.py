@@ -135,6 +135,72 @@ class CarPost(models.Model):
         verbose_name="Прочее"
     )
 
+    def __str__(self):
+        return f"{self.id} {self.brand} {self.model}"
+
     class Meta:
         verbose_name = "Пост"
         verbose_name_plural = "Посты"
+
+class CarPostImage(models.Model):
+    post = models.ForeignKey(
+        CarPost, on_delete=models.CASCADE,
+        related_name="post_images",
+        verbose_name="Пост"
+    )
+    image = models.ImageField(
+        upload_to='post_images/',
+        verbose_name="Фотография поста"
+    )
+
+    def __str__(self):
+        return f"{self.post} {self.image}"
+    
+    class Meta:
+        verbose_name = "Фотография поста"
+        verbose_name_plural = "Фотографии постов"
+
+class CarPostComment(models.Model):
+    post = models.ForeignKey(
+        CarPost, on_delete=models.CASCADE,
+        related_name="posts_comment",
+        verbose_name="Пост"
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL,
+        related_name="users_comments",
+        null=True, verbose_name="Пользователь"
+    )
+    text = models.CharField(
+        max_length=300,
+        verbose_name="Текст"
+    )
+    created = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата создания"
+    )
+
+    def __str__(self):
+        return f"{self.post}, {self.user}"
+    
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+class CarPostFavorite(models.Model):
+    post = models.ForeignKey(
+        CarPost, on_delete=models.CASCADE,
+        related_name="users_favorite",
+        verbose_name="Пост"
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name="posts_favorite_users"
+    )
+
+    def __str__(self):
+        return f"{self.post} {self.user}"
+    
+    class Meta:
+        verbose_name = "Избранное"
+        verbose_name_plural = "Избранные"

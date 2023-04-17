@@ -3,6 +3,8 @@ from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelM
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from rest_framework import status
 
 from apps.cars.models import Car, SpecialMarks, PeriodsOwnership, CarPost
 from apps.cars.serializers import CarSerializer, SpecialMarksSerializer, PeriodsOwnershipSerializer, CarPostSerializer
@@ -68,10 +70,13 @@ class CarPostAPIViewSet(GenericViewSet,
     queryset = CarPost.objects.all()
     serializer_class = CarPostSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['brand', ]
+    filterset_fields = ['brand', 'model', 'year', 'color', 'price']
     pagination_class = StandardResultsSetPagination
 
     def get_permissions(self):
         if self.action in ('update', 'partial_update', 'destroy'):
             return (IsAuthenticated(), CarPostPermission())
         return (AllowAny(), )
+    
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.users.models import User
+from apps.cars.serializers import CarPostSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -11,6 +12,15 @@ class UserSerializer(serializers.ModelSerializer):
                   'date_joined', 'profile_image', 'phone_number',
                   'verify')
         
+class UserDetailSerializer(serializers.ModelSerializer):
+    users_posts = CarPostSerializer(many=True, read_only=True)
+    class Meta:
+        model = User 
+        fields = ('id', 'last_login', 'username',
+                  'first_name', 'last_name', 'email',
+                  'date_joined', 'profile_image', 'phone_number',
+                  'verify', 'users_posts')   
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         max_length=255, write_only=True
