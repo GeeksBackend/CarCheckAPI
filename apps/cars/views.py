@@ -3,11 +3,9 @@ from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelM
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.response import Response
-from rest_framework import status
 
 from apps.cars.models import Car, SpecialMarks, PeriodsOwnership, CarPost, CarPostImage, CarPostComment, CarPostFavorite
-from apps.cars.serializers import CarSerializer, SpecialMarksSerializer, PeriodsOwnershipSerializer, CarPostSerializer, CarPostImageSerializer, CarPostCommentSerializer, CarPostFavoriteSerializer
+from apps.cars.serializers import CarSerializer, SpecialMarksSerializer, PeriodsOwnershipSerializer, CarPostSerializer, CarPostImageSerializer, CarPostCommentSerializer, CarPostFavoriteSerializer, CarPostDetailSerializer
 from apps.cars.permissions import CarPostPermission
 
 # Create your views here.
@@ -72,6 +70,11 @@ class CarPostAPIViewSet(GenericViewSet,
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['brand', 'model', 'year', 'color', 'price']
     pagination_class = StandardResultsSetPagination
+
+    def get_serializer_class(self):
+        if self.action in ('retrieve', ):
+            return CarPostDetailSerializer
+        return CarPostSerializer
 
     def get_permissions(self):
         if self.action in ('update', 'partial_update', 'destroy'):
