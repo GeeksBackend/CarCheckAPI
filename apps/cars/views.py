@@ -99,6 +99,9 @@ class CarPostCommentAPIViewSet(GenericViewSet,
     queryset = CarPostComment.objects.all()
     serializer_class = CarPostCommentSerializer
 
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
+
 class CarPostFavoriteAPIViewSet(GenericViewSet,
                          ListModelMixin, 
                          RetrieveModelMixin, 
@@ -107,3 +110,6 @@ class CarPostFavoriteAPIViewSet(GenericViewSet,
                          DestroyModelMixin):
     queryset = CarPostFavorite.objects.all()
     serializer_class = CarPostFavoriteSerializer
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
