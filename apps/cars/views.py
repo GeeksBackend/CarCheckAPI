@@ -6,8 +6,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import status
 
-from apps.cars.models import Car, SpecialMarks, PeriodsOwnership, CarPost
-from apps.cars.serializers import CarSerializer, SpecialMarksSerializer, PeriodsOwnershipSerializer, CarPostSerializer
+from apps.cars.models import Car, SpecialMarks, PeriodsOwnership, CarPost, CarPostImage, CarPostComment, CarPostFavorite
+from apps.cars.serializers import CarSerializer, SpecialMarksSerializer, PeriodsOwnershipSerializer, CarPostSerializer, CarPostImageSerializer, CarPostCommentSerializer, CarPostFavoriteSerializer
 from apps.cars.permissions import CarPostPermission
 
 # Create your views here.
@@ -80,3 +80,30 @@ class CarPostAPIViewSet(GenericViewSet,
     
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
+    
+class CarPostImageAPIViewSet(GenericViewSet,
+                         ListModelMixin, 
+                         RetrieveModelMixin, 
+                         CreateModelMixin, 
+                         UpdateModelMixin, 
+                         DestroyModelMixin):
+    queryset = CarPostImage.objects.all()
+    serializer_class = CarPostImageSerializer
+
+class CarPostCommentAPIViewSet(GenericViewSet,
+                         ListModelMixin, 
+                         RetrieveModelMixin, 
+                         CreateModelMixin, 
+                         UpdateModelMixin, 
+                         DestroyModelMixin):
+    queryset = CarPostComment.objects.all()
+    serializer_class = CarPostCommentSerializer
+
+class CarPostFavoriteAPIViewSet(GenericViewSet,
+                         ListModelMixin, 
+                         RetrieveModelMixin, 
+                         CreateModelMixin, 
+                         UpdateModelMixin, 
+                         DestroyModelMixin):
+    queryset = CarPostFavorite.objects.all()
+    serializer_class = CarPostFavoriteSerializer

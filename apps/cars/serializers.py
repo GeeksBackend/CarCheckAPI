@@ -1,7 +1,22 @@
 from rest_framework import serializers
 
-from apps.cars.models import Car, SpecialMarks, PeriodsOwnership, CarPost
+from apps.cars.models import Car, SpecialMarks, PeriodsOwnership, CarPost, CarPostImage, CarPostComment, CarPostFavorite
 
+
+class CarPostImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarPostImage
+        fields = "__all__"
+
+class CarPostCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarPostComment
+        fields = "__all__"
+
+class CarPostFavoriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarPostFavorite
+        fields = "__all__"
 
 class CarPostSerializer(serializers.ModelSerializer):
     class Meta:
