@@ -104,6 +104,11 @@ class CarPostCommentAPIViewSet(GenericViewSet,
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
+    
+    def get_permissions(self):
+        if self.action in ('update', 'partial_update', 'destroy'):
+            return (IsAuthenticated(), CarPostPermission())
+        return (AllowAny(), )
 
 class CarPostFavoriteAPIViewSet(GenericViewSet,
                          ListModelMixin, 
@@ -116,3 +121,8 @@ class CarPostFavoriteAPIViewSet(GenericViewSet,
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
+    
+    def get_permissions(self):
+        if self.action in ('update', 'partial_update', 'destroy'):
+            return (IsAuthenticated(), CarPostPermission())
+        return (AllowAny(), )
